@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf App</title>
+    <style>
+       *{
+        text-align: center;
+       }
+
+       body{
+        background-color: aliceblue;
+       }     
+
+        h1{
+            text-transform: uppercase;
+            font-size: 40px;
+        }
+
+        h1:hover{
+            color: rgb(199, 125, 112);
+        }
+
+        img{
+            max-width: 100%;
+            height: auto;
+        }
+
+        #inputBook{
+            margin-top: 20px;
+            margin-bottom: 25px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        label:hover{
+            color: rgb(138, 46, 30);
+        }
+
+        input{
+            border: 1px solid;
+            border-radius: 5px;
+            padding: 5px 40px;
+            margin-bottom: 10px;
+        }
+
+        input:focus{
+            background-color: rgb(219, 223, 228);
+        }
+
+        button:hover{
+            background-color: rgb(219, 223, 228);
+            color: black ;
+        }
+
+        button{
+            background-color: rgb(199, 125, 112);
+            color: white;
+            padding: 5px 10px 5px 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .container{
+            background-color: rgb(169, 153, 173); 
+            display: flex;
+            margin-top: 20px;
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding: 10px;
+            justify-content: center;
+            width: auto;
+        }
+
+        .item{
+            background-color: aliceblue;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px;
+        }
+
+        .item h2{
+            text-decoration: underline;
+            text-transform: uppercase;
+        }
+
+        .container h2:hover{
+            color: rgb(138, 46, 30);
+        }
+
+        #searchBook input{
+            padding: 5px;
+            width: 30%;
+        }
+
+        @media only screen and (max-width: 600px) {
+        img{
+            max-width: 100%;
+            height: auto;
+        }
+        .container{
+            flex-direction: column; 
+        }
+        .item{
+            flex-direction: row;
+        }
+        }
+    </style>
+
+</head>
+<body>
+  <h1>Bookshelf</h1>
+
+  <img src="flower.jpg" alt="flower">
+
+    <form id="inputBook">
+        <label for="judul" class="jdl">Book Title</label>
+        <br>
+        <input type="text" id="inputBookTitle" required>
+        <br>
+        <label for="judul">Book Author</label>
+        <br>
+        <input type="text" id="inputBookAuthor" required>
+        <br>
+        <label for="judul">Book Publication Year</label>
+        <br>
+        <input type="number" id="inputBookYear" required>
+        <br>
+        <label for="inputBookIsComplete">Completed</label>
+        
+        <input type="checkbox" id="inputBookIsComplete">
+        <br>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <div class="container">
+        <div class="item">
+            <h2>Incomplete Bookshelf</h2>
+            <div id="incompleteBookshelfList"></div>
+        </div>
+        <div class="item">
+            <h2>Complete Bookshelf</h2>
+            <form id="searchBook">
+                <input type="text" id="searchBookTitle" placeholder="Search by title"><br>
+                <button type="submit">Search</button>
+                <button type="button" id="clearSearch">Clear Search</button>
+            </form>
+        
+            <div id="searchResult"></div>
+            
+            <div id="completeBookshelfList"></div>
+        </div>
+    </div>
+
+    <script>
+        let books = [];
+
+        document.addEventListener('DOMContentLoaded', function(){
+        const storedBooks = localStorage.getItem('books');
+        if (storedBooks) {
+            books = JSON.parse(storedBooks);
+            renderBooks();
+        }
+
+        const inputForm = document.getElementById('inputBook');
+        inputForm.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            addBook();
+        });
+        });
+
+        const clearSearchButton = document.getElementById('clearSearch');
+        clearSearchButton.addEventListener('click', function() {
+            document.getElementById('searchBookTitle').value = '';
+            document.getElementById('searchResult').innerHTML = '';
+        });
+
+        function addBook() {
+            const title = document.getElementById('inputBookTitle').value;
+            const author = document.getElementById('inputBookAuthor').value;
+            const year = parseInt(document.getElementById('inputBookYear').value, 10);
+            const readCheckbox = document.getElementById('inputBookIsComplete');
+            const isComplete = readCheckbox.checked;
+            const id = creatingId();
+
+            const newBook = {
+            id,
+            title,
+            author,
+            year,
+            isComplete
+            };
+
+            books.push(newBook);
+            localStorage.setItem('books', JSON.stringify(books));
+
+            console.log('Book added:', newBook);
+            renderBooks();
+            inputForm.reset();
+        }
+
+        function creatingId() {
+            return +new Date();
+        }
+
+        function renderBooks() {
+            const incompleteBookshelfList = document.getElementById('incompleteBookshelfList');
+            const completeBookshelfList = document.getElementById('completeBookshelfList');
+
+            incompleteBookshelfList.innerHTML = '';
+            completeBookshelfList.innerHTML = '';
+
+            books.forEach(book => {
+            const bookItem = document.createElement('article');
+            bookItem.classList.add('book_item');
+            bookItem.innerHTML = `
+                <h3 style="color: rgb(84, 52, 160);">${book.title}</h3>
+                <p>Author : ${book.author}</p>
+                <p>Year : ${book.year}</p>
+                <div class="action">
+                <button class="${book.isComplete ? 'purple' : 'purple'}" onclick="toggleBookStatus(${book.id})">
+                    ${book.isComplete ? 'Not Finished' : 'Done'}
+                </button>
+                <button class="red" onclick="deleteBook(${book.id})">Delete Book</button>
+                </div>
+            `;
+
+            if (book.isComplete) {
+                completeBookshelfList.appendChild(bookItem);
+            } else {
+                incompleteBookshelfList.appendChild(bookItem);
+            }
+            });
+
+            console.log('Books rendered:', books);
+        }
+
+        window.toggleBookStatus = function(id) {
+            const bookIndex = books.findIndex(book => book.id === id);
+            if (bookIndex !== -1) {
+            books[bookIndex].isComplete = !books[bookIndex].isComplete;
+            localStorage.setItem('books', JSON.stringify(books));
+            console.log('Book status toggled:', books[bookIndex]);
+            renderBooks();
+            }
+        }
+
+        const searchForm = document.getElementById('searchBook');
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const searchTitle = document.getElementById('searchBookTitle').value.trim().toLowerCase();
+            const searchResult = books.filter(book => book.title.toLowerCase().includes(searchTitle));
+            renderSearchResult(searchResult);
+        });
+
+        function renderSearchResult(searchResult) {
+            const searchResultContainer = document.getElementById('searchResult');
+            searchResultContainer.innerHTML = '';
+            if (searchResult.length > 0) {
+            searchResult.forEach(book => {
+                const bookItem = document.createElement('div');
+                bookItem.classList.add('book_item');
+                bookItem.innerHTML = `
+                <h3>${book.title}</h3>
+                <p>Author : ${book.author}</p>
+                <p>Year : ${book.year}</p>
+                `;
+                searchResultContainer.appendChild(bookItem);
+            });
+            } else {
+            searchResultContainer.innerHTML = '<p>Unknown</p>';
+            }
+        }
+
+        window.deleteBook = function(id) {
+            const confirmation = confirm('Delete Book?');
+            if (confirmation) {
+            books = books.filter(book => book.id !== id);
+            localStorage.setItem('books', JSON.stringify(books));
+            renderBooks();
+            }
+        }
+    </script>
+</body>
+</html>
