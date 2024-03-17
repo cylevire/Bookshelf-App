@@ -1,0 +1,102 @@
+   *{
+    text-align: center;
+   }
+
+   body{
+    background-color: aliceblue;
+   }     
+
+    h1{
+        text-transform: uppercase;
+        font-size: 40px;
+    }
+
+    h1:hover{
+        color: rgb(199, 125, 112);
+    }
+
+    img{
+        max-width: 100%;
+        height: auto;
+    }
+
+    #inputBook{
+        margin-top: 20px;
+        margin-bottom: 25px;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    label:hover{
+        color: rgb(138, 46, 30);
+    }
+
+    input{
+        border: 1px solid;
+        border-radius: 5px;
+        padding: 5px 40px;
+        margin-bottom: 10px;
+    }
+
+    input:focus{
+        background-color: rgb(219, 223, 228);
+    }
+
+    button:hover{
+        background-color: rgb(219, 223, 228);
+        color: black ;
+    }
+
+    button{
+        background-color: rgb(199, 125, 112);
+        color: white;
+        padding: 5px 10px 5px 10px;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    .container{
+        background-color: rgb(169, 153, 173); 
+        display: flex;
+        margin-top: 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 10px;
+        justify-content: center;
+        width: auto;
+    }
+
+    .item{
+        background-color: aliceblue;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        padding: 15px;
+        margin: 15px;
+    }
+
+    .item h2{
+        text-decoration: underline;
+        text-transform: uppercase;
+    }
+
+    .container h2:hover{
+        color: rgb(138, 46, 30);
+    }
+
+    #searchBook input{
+        padding: 5px;
+        width: 30%;
+    }
+
+    @media only screen and (max-width: 600px) {
+    img{
+        max-width: 100%;
+        height: auto;
+    }
+    .container{
+        flex-direction: column; 
+    }
+    .item{
+        flex-direction: row;
+    }
+    }

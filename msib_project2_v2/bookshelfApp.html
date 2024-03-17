@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bookshelf App</title>
+    <link rel="stylesheet" href="css/bookStyle.css">
+
+</head>
+<body>
+    <h1>Bookshelf</h1>
+
+    <img src="assets/flower.jpg" alt="flower">
+
+    <form id="inputBook">
+        <label for="judul" class="jdl">Book Title</label>
+        <br>
+        <input type="text" id="inputTitle" required>
+        <br>
+        <label for="judul">Book Author</label>
+        <br>
+        <input type="text" id="inputAuthor" required>
+        <br>
+        <label for="judul">Book Publication Year</label>
+        <br>
+        <input type="number" id="inputYear" required>
+        <br>
+
+        <label for="inputIsComplete">Completed</label>
+        
+        <input type="checkbox" id="inputIsComplete">
+        <br>
+        
+        <button type="submit">Add Book</button>
+    </form>
+
+    <form id="searchBook">
+        <input type="text" id="searchByTitle" placeholder="Search by title"><br>
+        <button type="submit">Cari Buku</button>
+        <button type="button" id="clearSearch">Hapus Pencarian</button>
+    </form>
+
+    <div id="searchResult"></div>
+
+    <div class="container">
+        <div class="item">
+            <h2>Belum Selesai Dibaca</h2>
+            <div id="incomplete"></div>
+        </div>
+
+        <div class="item">
+            <h2>Selesai Dibaca</h2>
+            <div id="complete"></div>
+        </div>
+    </div>
+
+    <script src="js/bookScript.js" type="text/javascript"></script>
+</body>
+</html>
